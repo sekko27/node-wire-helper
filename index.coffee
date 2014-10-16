@@ -45,5 +45,10 @@ Helper =
 
   ########################################
   # Bean creation utilities
+  bean: (mod, args, properties) ->
+    create:
+      module: mod
+      args: args
+    properties: properties
 
 module.exports = Helper
