@@ -1,6 +1,4 @@
 _ = require 'lodash'
-
-# TODO We want to use root folder only at the direct parent not the absolute root. So we should not use the app-root-path dep.
 root = require 'app-root-path'
 
 LIB_PREFIX = process.env['LIB_PREFIX'] ? 'lib'

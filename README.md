@@ -2,6 +2,7 @@
 
 The module tries to define basic folder structure for DDD-like projects and to provide some shortcut for
 build wire contexts.
+It try to detect the direct parent (invoker) root path and resolve path relative to that.
 
 ## Best practices
 
@@ -54,4 +55,3 @@ You may want to use different prefix (for example src) if you want to compile (c
 # CoC
 
 As you can see, you have to configure almost nothing, you should follow conventions.
- 
