@@ -1,51 +1,27 @@
-###
-# Wire-context-helper
-###
 _ = require 'lodash'
+
+# TODO We want to use root folder only at the direct parent not the absolute root. So we should not use the app-root-path dep.
 root = require 'app-root-path'
 
 LIB_PREFIX = process.env['LIB_PREFIX'] ? 'lib'
 
 class WireContextHelper
-  ########################################
-
   lib: (tail) ->
-    ###
-    Library folder. It depends on the LIB_PREFIX
-    environment variable. It's 'lib' by default.
-    ###
     root.resolve "#{LIB_PREFIX}/#{tail}"
 
   domain: (tail) ->
-    ###
-    Domain root folder.
-    ###
     WireContextHelper.lib "domain/#{tail}"
 
   model: (name) ->
-    ###
-    Folder for domain models (entities/value objects).
-    ###
     WireContextHelper.domain "models/#{name}"
 
   Model: (name) ->
-    ###
-    Same as the 'model', but append 'Model' suffix
-    to the model name.
-    ###
     WireContextHelper.model "#{name}Model"
 
   repository: (name) ->
-    ###
-    Folder for repositors.
-    ###
     WireContextHelper.domain "repositories/#{name}"
 
   Repository: (name) ->
-    ###
-    Same as the 'repository', but append 'Repository'
-    suffix to the repository name automatically.
-    ###
     WireContextHelper.repository "#{name}Repository"
 
   service: (name) ->
