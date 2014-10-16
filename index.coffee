@@ -1,6 +1,8 @@
 _ = require 'lodash'
 root = require 'app-root-path'
 
+LIB_PREFIX = process.env['LIB_PREFIX'] ? 'lib'
+
 Helper =
   ########################################
   # Base path resolution
@@ -22,16 +24,16 @@ Helper =
     Helper.service "#{name}Service"
   infrastructure: (tail) ->
     Helper.lib "infrastructure/#{tail}"
-  controller: (name) ->
-    Helper.infrastructure "controllers/#{name}"
-  Controller: (name) ->
-    Helper.controller "#{name}Controller"
   persistence: (name) ->
     Helper.infrastructure "persistence/#{name}"
   log: (tail) ->
     Helper.infrastructure "log/#{tail}"
   i18n: (tail) ->
     Helper.infrastructure "i18n/#{tail}"
+  web: (tail) ->
+    Helper.lib "web/#{tail}"
+  cli: (tail) ->
+    Helper.lib "cli/#{tail}"
 
   ########################################
   # Use references easily
