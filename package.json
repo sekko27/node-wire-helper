@@ -1,0 +1,30 @@
+{
+  "name": "node-wire-context-helper",
+  "version": "0.0.1",
+  "description": "Helper module for wire contexts",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --recursice -R spec tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.metrix.co.hu:metrix/node-wire-context-helper.git"
+  },
+  "keywords": [
+    "wire",
+    "metrix",
+    "context"
+  ],
+  "author": "Balázs Kovács <balazs.kovacs@metrix.co.hu>",
+  "license": "Metrix Hungary Kft.",
+  "dependencies": {
+    "lodash": "~2.4.1",
+    "upper-case-first": "~1.0.1"
+  },
+  "devDependencies": {
+    "chai-as-promised": "~4.1.1",
+    "chai": "~1.9.2",
+    "mocha": "~1.21.5",
+    "load-grunt-tasks": "~0.6.0"
+  }
+}
