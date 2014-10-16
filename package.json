@@ -5,7 +5,8 @@
   "homepage": "http://gitlab.metrix.co.hu/metrix/node-wire-context-helper",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --recursice -R spec tests"
+    "test": "mocha --recursice -R spec tests",
+    "gendoc": "coffeedoc -o docs ."
   },
   "bugs": {
     "url": "http://gitlab.metrix.co.hu/metrix/node-wire-context-helper/issues",

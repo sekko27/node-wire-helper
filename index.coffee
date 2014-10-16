@@ -1,39 +1,69 @@
+###
+# Wire-context-helper
+###
 _ = require 'lodash'
 root = require 'app-root-path'
 
 LIB_PREFIX = process.env['LIB_PREFIX'] ? 'lib'
 
-Helper =
+class WireContextHelper
   ########################################
-  # Base path resolution
+
   lib: (tail) ->
-    root.resolve "lib/#{tail}"
+    ###
+    Library folder. It depends on the LIB_PREFIX
+    environment variable. It's 'lib' by default.
+    ###
+    root.resolve "#{LIB_PREFIX}/#{tail}"
+
   domain: (tail) ->
-    Helper.lib "domain/#{tail}"
+    ###
+    Domain root folder.
+    ###
+    WireContextHelper.lib "domain/#{tail}"
+
   model: (name) ->
-    Helper.domain "models/#{name}"
+    ###
+    Folder for domain models (entities/value objects).
+    ###
+    WireContextHelper.domain "models/#{name}"
+
   Model: (name) ->
-    Helper.model "#{name}Model"
+    ###
+    Same as the 'model', but append 'Model' suffix
+    to the model name.
+    ###
+    WireContextHelper.model "#{name}Model"
+
   repository: (name) ->
-    Helper.domain "repositories/#{name}"
+    ###
+    Folder for repositors.
+    ###
+    WireContextHelper.domain "repositories/#{name}"
+
   Repository: (name) ->
-    Helper.repository "#{name}Repository"
+    ###
+    Same as the 'repository', but append 'Repository'
+    suffix to the repository name automatically.
+    ###
+    WireContextHelper.repository "#{name}Repository"
+
   service: (name) ->
-    Helper.domain "services/#{name}"
+    WireContextHelper.domain "services/#{name}"
   Service: (name) ->
-    Helper.service "#{name}Service"
+    WireContextHelper.service "#{name}Service"
   infrastructure: (tail) ->
-    Helper.lib "infrastructure/#{tail}"
+    WireContextHelper.lib "infrastructure/#{tail}"
   persistence: (name) ->
-    Helper.infrastructure "persistence/#{name}"
+    WireContextHelper.infrastructure "persistence/#{name}"
   log: (tail) ->
-    Helper.infrastructure "log/#{tail}"
+    WireContextHelper.infrastructure "log/#{tail}"
   i18n: (tail) ->
-    Helper.infrastructure "i18n/#{tail}"
+    WireContextHelper.infrastructure "i18n/#{tail}"
   web: (tail) ->
-    Helper.lib "web/#{tail}"
+    WireContextHelper.lib "web/#{tail}"
   cli: (tail) ->
-    Helper.lib "cli/#{tail}"
+    WireContextHelper.lib "cli/#{tail}"
 
   ########################################
   # Use references easily
@@ -41,7 +71,7 @@ Helper =
     $ref: name
 
   refs: (names) ->
-    _.invoke names, Helper.ref
+    _.invoke names, WireContextHelper.ref
 
   ########################################
   # Bean creation utilities
@@ -51,4 +81,10 @@ Helper =
       args: args
     properties: properties
 
-module.exports = Helper
+  env: (cases, def) ->
+    if _.has cases, WireContextHelper.env()
+      _.result cases, WireContextHelper.env()
+    else
+      def
+
+module.exports = new WireContextHelper
