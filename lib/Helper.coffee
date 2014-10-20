@@ -23,7 +23,7 @@ WireContextHelper =
   repository: (name) ->
     WireContextHelper.domain "repositories/#{name}"
 
-  Repository: (name) ->
+  Repository: (name = '') ->
     WireContextHelper.repository "#{name}Repository"
 
   service: (name) ->
@@ -38,7 +38,10 @@ WireContextHelper =
     WireContextHelper.application "middlewares/#{tail}"
   ApplicationMiddleware: (tail) ->
     WireContextHelper.applicationMiddleware "#{tail}Middleware"
-
+  controller: (tail) ->
+    WireContextHelper.application "controllers/#{tail}"
+  Controller: (tail) ->
+    WireContextHelper.controller "#{tail}Controller"
   persistence: (name) ->
     WireContextHelper.infrastructure "persistence/#{name}"
   log: (tail) ->
