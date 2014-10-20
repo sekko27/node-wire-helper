@@ -1,7 +1,14 @@
 _ = require 'lodash'
 wire = require 'wire'
+util = require 'util'
 
 module.exports = (spec, callback) ->
+  plugin = module: "#{__dirname}/plugins/helper"
+  if _.has(spec, '$plugins') and _.isArray(spec['$plugins'])
+    spec['$plugins'].push plugin
+  else
+    spec['$plugins'] = [ plugin ]
+
   wire(spec).then(
     (context) ->
       numberOfBeans = _.keys(context).length

@@ -1,11 +1,11 @@
 {
   "name": "wire-context-helper",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Helper module for wire contexts applying DDD project folder structure",
   "homepage": "http://gitlab.metrix.co.hu/metrix/node-wire-context-helper",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --recursice -R spec tests",
+    "test": "mocha --recursive -R spec tests",
     "gendoc": "coffeedoc -o docs ."
   },
   "bugs": {
@@ -28,7 +28,9 @@
     "lodash": "~2.4.1",
     "upper-case-first": "~1.0.1",
     "wire": "~0.10.9",
-    "q": "~1.0.1"
+    "q": "~1.0.1",
+    "when": "~3.5.0",
+    "lodash-deep": "~1.4.2"
   },
   "devDependencies": {
     "chai-as-promised": "~4.1.1",
