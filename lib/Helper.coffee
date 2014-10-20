@@ -7,7 +7,7 @@ LIB_PREFIX = process.env['LIB_PREFIX'] ? 'lib'
 # We assume, that we are in the node_modules/node-wire-context-helper
 root = path.resolve "#{__dirname}/../../.."
 
-class WireContextHelper
+WireContextHelper =
   lib: (tail) ->
     path.resolve "#{root}/#{LIB_PREFIX}/#{tail}"
 
@@ -65,4 +65,4 @@ class WireContextHelper
     else
       def
 
-module.exports = new WireContextHelper
+module.exports = WireContextHelper
