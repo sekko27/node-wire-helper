@@ -34,6 +34,11 @@ WireContextHelper =
     WireContextHelper.lib "infrastructure/#{tail}"
   application: (tail) ->
     WireContextHelper.infrastructure "application/#{tail}"
+  applicationMiddleware: (tail) ->
+    WireContextHelper.application "middlewares/#{tail}"
+  ApplicationMiddleware: (tail) ->
+    WireContextHelper.applicationMiddleware "#{tail}Middleware"
+
   persistence: (name) ->
     WireContextHelper.infrastructure "persistence/#{name}"
   log: (tail) ->
