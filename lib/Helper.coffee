@@ -32,6 +32,8 @@ WireContextHelper =
     WireContextHelper.service "#{name}Service"
   infrastructure: (tail) ->
     WireContextHelper.lib "infrastructure/#{tail}"
+  application: (tail) ->
+    WireContextHelper.infrastructure "application/#{tail}"
   persistence: (name) ->
     WireContextHelper.infrastructure "persistence/#{name}"
   log: (tail) ->
