@@ -8,7 +8,7 @@ module.exports = (spec, callback) ->
       if _.has context, 'logger'
         logger = context['logger']
         logger.info "Application initialized with #{numberOfBeans} beans"
-        logger.info "You can see beans setting env.HM_LOG_LEVEL to debug"
+        logger.info "You can see beans setting env.LOG_LEVEL to debug"
         logger.debug "Beans", _.keys context
       callback null, context
     (err) ->

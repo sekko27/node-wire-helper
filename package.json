@@ -1,6 +1,6 @@
 {
   "name": "wire-context-helper",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Helper module for wire contexts applying DDD project folder structure",
   "homepage": "http://gitlab.metrix.co.hu/metrix/node-wire-context-helper",
   "main": "index.js",
@@ -27,7 +27,8 @@
   "dependencies": {
     "lodash": "~2.4.1",
     "upper-case-first": "~1.0.1",
-    "wire": "~0.10.9"
+    "wire": "~0.10.9",
+    "q": "~1.0.1"
   },
   "devDependencies": {
     "chai-as-promised": "~4.1.1",
