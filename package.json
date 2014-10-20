@@ -1,6 +1,6 @@
 {
   "name": "wire-context-helper",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Helper module for wire contexts applying DDD project folder structure",
   "homepage": "http://gitlab.metrix.co.hu/metrix/node-wire-context-helper",
   "main": "index.js",
