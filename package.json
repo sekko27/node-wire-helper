@@ -26,8 +26,7 @@
   "private": true,
   "dependencies": {
     "lodash": "~2.4.1",
-    "upper-case-first": "~1.0.1",
-    "app-root-path": "~0.1.0"
+    "upper-case-first": "~1.0.1"
   },
   "devDependencies": {
     "chai-as-promised": "~4.1.1",

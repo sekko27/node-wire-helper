@@ -1,11 +1,15 @@
 _ = require 'lodash'
-root = require 'app-root-path'
+path = require 'path'
 
 LIB_PREFIX = process.env['LIB_PREFIX'] ? 'lib'
 
+# Calculate parent module (invoker) root path
+# We assume, that we are in the node_modules/node-wire-context-helper
+root = path.resolve "#{__dirname}/../.."
+
 class WireContextHelper
   lib: (tail) ->
-    root.resolve "#{LIB_PREFIX}/#{tail}"
+    path.resolve "#{root}/#{LIB_PREFIX}/#{tail}"
 
   domain: (tail) ->
     WireContextHelper.lib "domain/#{tail}"
