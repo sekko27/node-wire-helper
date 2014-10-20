@@ -49,7 +49,7 @@ WireContextHelper =
     $ref: name
 
   refs: (names) ->
-    _.invoke names, WireContextHelper.ref
+    _.map names, WireContextHelper.ref
 
   ########################################
   # Bean creation utilities
