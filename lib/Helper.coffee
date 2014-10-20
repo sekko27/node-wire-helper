@@ -39,7 +39,7 @@ WireContextHelper =
   ApplicationMiddleware: (tail) ->
     WireContextHelper.applicationMiddleware "#{tail}Middleware"
   controller: (tail) ->
-    WireContextHelper.application "controllers/#{tail}"
+    WireContextHelper.infrastructure "controllers/#{tail}"
   Controller: (tail) ->
     WireContextHelper.controller "#{tail}Controller"
   persistence: (name) ->
