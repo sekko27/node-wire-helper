@@ -50,6 +50,8 @@ WireContextHelper =
     WireContextHelper.controller "#{tail}Controller"
   persistence: (name) ->
     WireContextHelper.infrastructure "persistence/#{name}"
+  messaging: (name) ->
+    WireContextHelper.infrastructure "messaging/#{name}"
   log: (tail) ->
     WireContextHelper.infrastructure "log/#{tail}"
   i18n: (tail) ->
