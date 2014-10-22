@@ -35,7 +35,7 @@ WireContextHelper =
   web: (tail) ->
     WireContextHelper.infrastructure "web/#{tail}"
   application: (tail) ->
-    WireContextHelper.web "#{tail}"
+    WireContextHelper.web tail
   applicationMiddleware: (tail) ->
     WireContextHelper.application "middlewares/#{tail}"
   ApplicationMiddleware: (tail) ->
@@ -54,10 +54,8 @@ WireContextHelper =
     WireContextHelper.infrastructure "log/#{tail}"
   i18n: (tail) ->
     WireContextHelper.infrastructure "i18n/#{tail}"
-  web: (tail) ->
-    WireContextHelper.lib "web/#{tail}"
   cli: (tail) ->
-    WireContextHelper.lib "cli/#{tail}"
+    WireContextHelper.infrastructure "cli/#{tail}"
 
   ########################################
   # Use references easily
