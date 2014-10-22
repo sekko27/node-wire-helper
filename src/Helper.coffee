@@ -35,7 +35,7 @@ WireContextHelper =
   web: (tail) ->
     WireContextHelper.infrastructure "web/#{tail}"
   application: (tail) ->
-    WireContextHelper.web "application/#{tail}"
+    WireContextHelper.web "#{tail}"
   applicationMiddleware: (tail) ->
     WireContextHelper.application "middlewares/#{tail}"
   ApplicationMiddleware: (tail) ->
