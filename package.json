@@ -9,21 +9,22 @@
     "gendoc": "coffeedoc -o docs ."
   },
   "bugs": {
-    "url": "http://gitlab.metrix.co.hu/metrix/node-wire-context-helper/issues",
-    "email": "balazs.kovacs@metrix.co.hu"
+    "url": "https://github.com/sekko27/node-wire-helper/issues",
+    "email": "sekko272727@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "git@gitlab.metrix.co.hu:metrix/node-wire-context-helper.git"
+    "url": "git@github.com:sekko27/node-wire-helper.git"
   },
   "keywords": [
     "wire",
-    "metrix",
+    "ddd",
+    "di",
     "context"
   ],
-  "author": "Balázs Kovács <balazs.kovacs@metrix.co.hu>",
-  "license": "Metrix Hungary Kft.",
-  "private": true,
+  "author": "Sekko <sekko272727@gmail.com>",
+  "license": "BSD-2-Clause",
+  "private": false,
   "dependencies": {
     "lodash": "~2.4.1",
     "upper-case-first": "~1.0.1",
