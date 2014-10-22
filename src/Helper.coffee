@@ -58,6 +58,10 @@ WireContextHelper =
     WireContextHelper.infrastructure "i18n/#{tail}"
   cli: (tail) ->
     WireContextHelper.infrastructure "cli/#{tail}"
+  command: (tail) ->
+    WireContextHelper.cli "commands/#{tail}"
+  Command: (tail) ->
+    WireContextHelper.command "#{tail}Command"
 
   ########################################
   # Use references easily
