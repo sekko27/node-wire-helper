@@ -2,7 +2,7 @@
   "name": "wire-context-helper",
   "version": "0.1.6",
   "description": "Helper module for wire contexts applying DDD project folder structure",
-  "homepage": "http://gitlab.metrix.co.hu/metrix/node-wire-context-helper",
+  "homepage": "https://github.com/sekko27/node-wire-helper",
   "main": "index.js",
   "scripts": {
     "test": "mocha --recursive -R spec tests",
