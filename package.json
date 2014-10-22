@@ -6,6 +6,8 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --recursive -R spec tests",
+    "prepublish": "coffee -c -o lib/ src/",
+    "postinstall": "[ -d \"lib\" ] || (echo \"Compiling coffee sources\" && coffee -c -o lib src)",
     "gendoc": "coffeedoc -o docs ."
   },
   "bugs": {
@@ -32,7 +34,7 @@
     "q": "~1.0.1",
     "when": "~3.5.0",
     "lodash-deep": "~1.4.2",
-    "monq": "~0.3.1"
+    "coffee-script": "~1.8.0"
   },
   "devDependencies": {
     "chai-as-promised": "~4.1.1",
