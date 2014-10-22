@@ -32,14 +32,20 @@ WireContextHelper =
     WireContextHelper.service "#{name}Service"
   infrastructure: (tail) ->
     WireContextHelper.lib "infrastructure/#{tail}"
+  web: (tail) ->
+    WireContextHelper.infrastructure "web/#{tail}"
   application: (tail) ->
-    WireContextHelper.infrastructure "application/#{tail}"
+    WireContextHelper.web "application/#{tail}"
   applicationMiddleware: (tail) ->
     WireContextHelper.application "middlewares/#{tail}"
   ApplicationMiddleware: (tail) ->
     WireContextHelper.applicationMiddleware "#{tail}Middleware"
+  applicationConfigurator: (tail) ->
+    WireContextHelper.application "configurators/#{tail}"
+  ApplicationConfigurator: (tail) ->
+    WireContextHelper.applicationConfigurator "#{tail}Configurator"
   controller: (tail) ->
-    WireContextHelper.infrastructure "controllers/#{tail}"
+    WireContextHelper.web "controllers/#{tail}"
   Controller: (tail) ->
     WireContextHelper.controller "#{tail}Controller"
   persistence: (name) ->

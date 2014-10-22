@@ -25,7 +25,7 @@ You can do that:
 
 The basic project structure:
 
-* **build** - Build folder.
+* **build** - Build folder if you write native node bind.
 * **context** - Context configurations.
 * **locales** - Locale files for i18n.
 * **public** - Public sources (js/css/etc).
