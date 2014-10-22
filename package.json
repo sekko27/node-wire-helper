@@ -25,7 +25,7 @@
     "context"
   ],
   "author": "Sekko <sekko272727@gmail.com>",
-  "license": "BSD-2-Clause",
+  "license": "MIT",
   "private": false,
   "dependencies": {
     "lodash": "~2.4.1",
