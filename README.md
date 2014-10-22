@@ -4,6 +4,15 @@ The module tries to define basic folder structure for DDD-like projects and to p
 build wire contexts.
 It try to detect the direct parent (invoker) root path and resolve path relative to that.
 
+## Develop wire-context-helper
+
+It's a coffee-script project, so you need to compile it into javascripts. Package.json contains prepublish and 
+postinstall scripts which automates these processes, but meanwhile development you should compile sources automatically.
+You can do that:
+
+* Configure your IDE to compile coffeescripts under src to the lib folder.
+* Run the watcher: coffee -cw -o lib src
+
 ## Best practices
 
 * Follow the project structure
