@@ -68,8 +68,8 @@ WireContextHelper =
     WireContextHelper.command "#{tail}Command"
   view: (tail) ->
     path.resolve "#{root}/views/#{tail}/"
-  View: (controller, action) ->
-    WireContextHelper.view "#{controller}/#{action}"
+  View: (controller, action, ext = ".html") ->
+    WireContextHelper.view "#{controller}/#{action}#{ext}"
 
   ########################################
   # Use references easily
