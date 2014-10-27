@@ -44,6 +44,10 @@ WireContextHelper =
     WireContextHelper.application "configurators/#{tail}"
   ApplicationConfigurator: (tail) ->
     WireContextHelper.applicationConfigurator "#{tail}Configurator"
+  applicationFactory: (tail) ->
+    WireContextHelper.application "factories/#{tail}"
+  ApplicationFactory: (tail) ->
+    WireContextHelper.applicationFactory "#{tail}Factory"
   controller: (tail) ->
     WireContextHelper.web "controllers/#{tail}"
   Controller: (tail) ->
