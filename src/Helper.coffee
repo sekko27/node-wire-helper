@@ -66,6 +66,10 @@ WireContextHelper =
     WireContextHelper.cli "commands/#{tail}"
   Command: (tail) ->
     WireContextHelper.command "#{tail}Command"
+  view: (tail) ->
+    WireContextHelper.path "views/#{tail}"
+  View: (controller, action) ->
+    WireContextHelper.view "#{controller}/#{action}"
 
   ########################################
   # Use references easily
