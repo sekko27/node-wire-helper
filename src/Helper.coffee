@@ -67,7 +67,7 @@ WireContextHelper =
   Command: (tail) ->
     WireContextHelper.command "#{tail}Command"
   view: (tail) ->
-    WireContextHelper.path "views/#{tail}"
+    path.resolve "#{root}/views/#{tail}/"
   View: (controller, action) ->
     WireContextHelper.view "#{controller}/#{action}"
 
