@@ -8,6 +8,9 @@ LIB_PREFIX = process.env['LIB_PREFIX'] ? 'lib'
 root = path.resolve "#{__dirname}/../../.."
 
 WireContextHelper =
+  path: (tail) ->
+    path.resolve "#{root}/#{tail}"
+
   lib: (tail) ->
     path.resolve "#{root}/#{LIB_PREFIX}/#{tail}"
 
