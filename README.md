@@ -101,10 +101,7 @@ var Helper = wch.Helper('lib');
 
 module.exports = {
     helper: {
-        create: {
-            module: 'wire-context-helper',
-            args: [ 'lib' ]
-         }
+        module: 'wire-context-helper',
     },
     express: {
         create: {
