@@ -1,99 +1,100 @@
 _ = require 'lodash'
 path = require 'path'
 
-LIB_PREFIX = process.env['LIB_PREFIX'] ? 'lib'
-
 # Calculate parent module (invoker) root path
 # We assume, that we are in the node_modules/node-wire-context-helper
 root = path.resolve "#{__dirname}/../../.."
 
-WireContextHelper =
-  path: (tail) ->
-    path.resolve "#{root}/#{tail}"
+instances = {}
 
-  lib: (tail) ->
-    path.resolve "#{root}/#{LIB_PREFIX}/#{tail}"
+module.exports = (prefix = "lib") ->
+  return instances[prefix] if _.has instances, prefix
 
-  domain: (tail) ->
-    WireContextHelper.lib "domain/#{tail}"
+  instances[prefix] = H =
+    path: (tail) ->
+      path.resolve "#{root}/#{tail}"
 
-  model: (name) ->
-    WireContextHelper.domain "models/#{name}"
+    lib: (tail) ->
+      path.resolve "#{root}/#{prefix}/#{tail}"
 
-  Model: (name) ->
-    WireContextHelper.model "#{name}Model"
+    domain: (tail) ->
+      H.lib "domain/#{tail}"
 
-  repository: (name) ->
-    WireContextHelper.domain "repositories/#{name}"
+    model: (name) ->
+      H.domain "models/#{name}"
 
-  Repository: (name = '') ->
-    WireContextHelper.repository "#{name}Repository"
+    Model: (name) ->
+      H.model "#{name}Model"
 
-  service: (name) ->
-    WireContextHelper.domain "services/#{name}"
-  Service: (name) ->
-    WireContextHelper.service "#{name}Service"
-  infrastructure: (tail) ->
-    WireContextHelper.lib "infrastructure/#{tail}"
-  web: (tail) ->
-    WireContextHelper.infrastructure "web/#{tail}"
-  application: (tail) ->
-    WireContextHelper.web tail
-  applicationMiddleware: (tail) ->
-    WireContextHelper.application "middlewares/#{tail}"
-  ApplicationMiddleware: (tail) ->
-    WireContextHelper.applicationMiddleware "#{tail}Middleware"
-  applicationConfigurator: (tail) ->
-    WireContextHelper.application "configurators/#{tail}"
-  ApplicationConfigurator: (tail) ->
-    WireContextHelper.applicationConfigurator "#{tail}Configurator"
-  applicationFactory: (tail) ->
-    WireContextHelper.application "factories/#{tail}"
-  ApplicationFactory: (tail) ->
-    WireContextHelper.applicationFactory "#{tail}Factory"
-  controller: (tail) ->
-    WireContextHelper.web "controllers/#{tail}"
-  Controller: (tail) ->
-    WireContextHelper.controller "#{tail}Controller"
-  persistence: (name) ->
-    WireContextHelper.infrastructure "persistence/#{name}"
-  messaging: (name) ->
-    WireContextHelper.infrastructure "messaging/#{name}"
-  log: (tail) ->
-    WireContextHelper.infrastructure "log/#{tail}"
-  i18n: (tail) ->
-    WireContextHelper.infrastructure "i18n/#{tail}"
-  cli: (tail) ->
-    WireContextHelper.infrastructure "cli/#{tail}"
-  command: (tail) ->
-    WireContextHelper.cli "commands/#{tail}"
-  Command: (tail) ->
-    WireContextHelper.command "#{tail}Command"
-  view: (tail) ->
-    path.resolve "#{root}/views/#{tail}/"
-  View: (controller, action, ext = ".html") ->
-    WireContextHelper.view "#{controller}/#{action}#{ext}"
+    repository: (name) ->
+      H.domain "repositories/#{name}"
 
-  ########################################
-  # Use references easily
-  ref: (name) ->
-    $ref: name
+    Repository: (name = '') ->
+      H.repository "#{name}Repository"
 
-  refs: (names) ->
-    _.map names, WireContextHelper.ref
+    service: (name) ->
+      H.domain "services/#{name}"
+    Service: (name) ->
+      H.service "#{name}Service"
+    infrastructure: (tail) ->
+      H.lib "infrastructure/#{tail}"
+    web: (tail) ->
+      H.infrastructure "web/#{tail}"
+    application: (tail) ->
+      H.web tail
+    applicationMiddleware: (tail) ->
+      H.application "middlewares/#{tail}"
+    ApplicationMiddleware: (tail) ->
+      H.applicationMiddleware "#{tail}Middleware"
+    applicationConfigurator: (tail) ->
+      H.application "configurators/#{tail}"
+    ApplicationConfigurator: (tail) ->
+      H.applicationConfigurator "#{tail}Configurator"
+    applicationFactory: (tail) ->
+      H.application "factories/#{tail}"
+    ApplicationFactory: (tail) ->
+      H.applicationFactory "#{tail}Factory"
+    controller: (tail) ->
+      H.web "controllers/#{tail}"
+    Controller: (tail) ->
+      H.controller "#{tail}Controller"
+    persistence: (name) ->
+      H.infrastructure "persistence/#{name}"
+    messaging: (name) ->
+      H.infrastructure "messaging/#{name}"
+    log: (tail) ->
+      H.infrastructure "log/#{tail}"
+    i18n: (tail) ->
+      H.infrastructure "i18n/#{tail}"
+    cli: (tail) ->
+      H.infrastructure "cli/#{tail}"
+    command: (tail) ->
+      H.cli "commands/#{tail}"
+    Command: (tail) ->
+      H.command "#{tail}Command"
+    view: (tail) ->
+      path.resolve "#{root}/views/#{tail}/"
+    View: (controller, action, ext = ".html") ->
+      H.view "#{controller}/#{action}#{ext}"
 
-  ########################################
-  # Bean creation utilities
-  bean: (mod, args, properties) ->
-    create:
-      module: mod
-      args: args
-    properties: properties
+    ########################################
+    # Use references easily
+    ref: (name) ->
+      $ref: name
 
-  env: (cases, def) ->
-    if _.has cases, WireContextHelper.env()
-      _.result cases, WireContextHelper.env()
-    else
-      def
+    refs: (names) ->
+      _.map names, H.ref
 
-module.exports = WireContextHelper
+    ########################################
+    # Bean creation utilities
+    bean: (mod, args, properties) ->
+      create:
+        module: mod
+        args: args
+      properties: properties
+
+    env: (cases, def) ->
+      if _.has cases, H.env()
+        _.result cases, H.env()
+      else
+        def
