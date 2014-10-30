@@ -93,8 +93,11 @@ module.exports = (prefix = "lib") ->
         args: args
       properties: properties
 
+    environment: ->
+      process.env['NODE_ENV'] ? 'production'
+
     env: (cases, def) ->
-      if _.has cases, H.env()
-        _.result cases, H.env()
+      if _.has cases, H.environment()
+        _.result cases, H.environment()
       else
         def
