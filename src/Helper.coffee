@@ -76,6 +76,10 @@ module.exports = (prefix = "lib") ->
       path.resolve "#{root}/views/#{tail}/"
     View: (controller, action, ext = ".html") ->
       H.view "#{controller}/#{action}#{ext}"
+    util: (tail) ->
+      H.lib "utils/#{tail}"
+    context: (tail) ->
+      H.lib "contexts/#{tail}"
 
     ########################################
     # Use references easily
