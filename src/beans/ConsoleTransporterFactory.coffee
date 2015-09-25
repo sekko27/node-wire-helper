@@ -1,7 +1,11 @@
+_ = require 'lodash'
+
 module.exports = (winston, options = {}) ->
+  BASE_OPTIONS =
+    level: 'info'
+    colorize: true
+    handleException: true
+
   (logger) ->
-    level = process.env?['LOG_LEVEL'] ? options.level ? 'info'
     logger
-      .add winston.transports['Console'],
-        handleExceptions: (options.handleExceptions ? false) == true
-        level: level
+      .add winston.transports['Console'], _.assign({}, BASE_OPTIONS, options)
