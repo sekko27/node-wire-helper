@@ -5,4 +5,5 @@ module.exports =
   ConfigurableFactory: require './ConfigurableFactory'
   MongooseInitializer: require './MongooseInitializer'
   GridFSConnectionFactory: require './GridFSConnectionFactory'
+  MongooseLogger: require './MongooseLogger'
 
