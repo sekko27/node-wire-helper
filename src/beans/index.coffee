@@ -3,4 +3,6 @@ module.exports =
   WinstonLoggerFactory: require './WinstonLoggerFactory'
   ConsoleTransporterFactory: require './ConsoleTransporterFactory'
   ConfigurableFactory: require './ConfigurableFactory'
+  MongooseInitializer: require './MongooseInitializer'
+  GridFSConnectionFactory: require './GridFSConnectionFactory'
 

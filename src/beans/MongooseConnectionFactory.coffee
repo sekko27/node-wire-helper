@@ -17,11 +17,12 @@ q = require 'q'
 
 module.exports = (mongoose, settings) ->
   defer = q.defer()
-  url = settings['connection'].url
-  options = settings['connection'].options || {}
+  connectionSettings = settings.connection
+  url = connectionSettings.url
+  options = connectionSettings.options || {}
   connection = mongoose.createConnection url, options
-  connection.on 'error', (err) ->
-    defer.reject(err)
-  connection.once 'open', ->
-    defer.resolve(connection)
+
+  connection.on   'error', (err) -> defer.reject(err)
+  connection.once 'open',        -> defer.resolve(connection)
+
   defer.promise
