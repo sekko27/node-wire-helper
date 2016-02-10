@@ -107,4 +107,9 @@ module.exports = (prefix = "lib") ->
         def
 
     envVar: (name, def) ->
-      process.env[name] ? def
+      if process.env[name]
+        console.log "Using #{name} environment variable"
+        process.env[name]
+      else
+        console.log "Using default value for #{name} environment variable: #{def}"
+        def
