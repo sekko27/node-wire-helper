@@ -105,3 +105,6 @@ module.exports = (prefix = "lib") ->
         _.result cases, H.environment()
       else
         def
+
+    envVar: (name, def) ->
+      process.env[name] ? def
