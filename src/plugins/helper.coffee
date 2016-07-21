@@ -8,7 +8,7 @@ sub = (resolver, componentDef, wire) ->
   options = componentDef.options
   module = options.module
   args = if _.isArray(options.args) then wire(options.args) else []
-  [ref, path] = _.rest module.match /^([^#]+)#(.*)$/
+  [ref, path] = _.tail module.match /^([^#]+)#(.*)$/
   referenced = wire($ref: ref)
   instance = w.join(referenced, path, args).spread(createInstance)
   resolver.resolve(instance)
