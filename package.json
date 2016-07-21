@@ -1,6 +1,6 @@
 {
   "name": "wire-context-helper",
-  "version": "0.2.5",
+  "version": "0.3.0",
   "description": "Helper module for wire contexts applying DDD project folder structure",
   "homepage": "https://github.com/sekko27/node-wire-helper",
   "main": "index.js",
@@ -28,12 +28,11 @@
   "license": "MIT",
   "private": false,
   "dependencies": {
-    "lodash": "~2.4.1",
+    "lodash": "~4.13.1",
     "upper-case-first": "~1.0.1",
     "wire": "~0.10.9",
     "q": "~1.0.1",
     "when": "~3.5.0",
-    "lodash-deep": "~1.4.2",
     "coffee-script": "~1.8.0"
   },
   "devDependencies": {

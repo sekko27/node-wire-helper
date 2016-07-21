@@ -1,10 +1,9 @@
 _ = require('lodash')
-_.mixin(require('lodash-deep'))
 w = require 'when'
 
 sub = (resolver, componentDef, wire) ->
   createInstance = (module, path, args) ->
-    _.deepGet(module, path).apply null, args
+    _.get(module, path).apply null, args
 
   options = componentDef.options
   module = options.module
