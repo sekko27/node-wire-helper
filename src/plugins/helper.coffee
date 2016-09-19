@@ -2,8 +2,12 @@ _ = require('lodash')
 w = require 'when'
 
 sub = (resolver, componentDef, wire) ->
-  createInstance = (module, path, args) ->
-    _.get(module, path).apply null, args
+  createInstance = (referencedModule, path, args) ->
+    switch componentDef.factory
+      when 'module'
+        _.get(referencedModule, path)
+      else
+        _.get(referencedModule, path).apply null, args
 
   options = componentDef.options
   module = options.module
