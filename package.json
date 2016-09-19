@@ -1,7 +1,7 @@
 {
   "name": "wire-context-helper",
-  "version": "0.3.1",
-  "description": "Helper module for wire contexts applying DDD project folder structure",
+  "version": "1.0.0",
+  "description": "Helper module for Wire DI extending it with plugins",
   "homepage": "https://github.com/sekko27/node-wire-helper",
   "main": "index.js",
   "scripts": {
@@ -28,12 +28,12 @@
   "license": "MIT",
   "private": false,
   "dependencies": {
+    "bluebird": "^3.4.6",
+    "coffee-script": "~1.8.0",
     "lodash": "~4.13.1",
     "upper-case-first": "~1.0.1",
-    "wire": "~0.10.9",
-    "q": "~1.0.1",
     "when": "~3.5.0",
-    "coffee-script": "~1.8.0"
+    "wire": "~0.10.9"
   },
   "devDependencies": {
     "chai-as-promised": "~4.1.1",
