@@ -9,9 +9,10 @@ The module tries to
 
 ### CoCModuleLoader
 
-CoCModuleLoader is a module loader for wire. It supports module definitions by the `(env#)?category:pathSpec` format. If the module is not defined in this format then the loader will fall-back to the default `require` module loader. 
+CoCModuleLoader is a module loader for wire. It supports module definitions defined by the `(env#)?category:pathSpec` format. 
+If the module is not defined in this format then the loader will fall-back to the default `require` module loader. 
 
-For example passing the `lib#Model:Person` moduleId to the loader it tries to load module from `lib/domain/models/PersonModel` path (under one of the registered module root).
+For example passing the `lib#Model:Person` moduleId to the loader it tries to load module from `lib/domain/models/PersonModel` path (under one of the registered module root, see below).
 
 The category loaders are pluggable into the loader.
 
@@ -26,7 +27,7 @@ Wire-context-helper module exports the class as `CoCModuleLoader`:
 `CoCModuleLoader` requires a logger instance with `warn`, `info` shortcuts:
  
 ```coffeescript
-# By default extensions parameter is defined as ['.js', '.node', '.json'] (in this order).
+# By default the 'extensions' parameter is defined as ['.js', '.node', '.json'] (in this order).
 # Loader will try to load modules with this extensions in this order.
 extensions = ['.js']
 loader = new CoCModuleLoader(extensions)
@@ -35,11 +36,21 @@ loader.logger = createLoggerInstanceSomehow() # For example log4js, winston, etc
 
 #### Configuration
 
-You can define module root the loader tries to look for the modules under them. Loader tries to load files with .js, .node and .json extensions (by default, but you can override this with constructor parameter).
+##### Module root registration
 
-You can assign priority to the module roots: lower value means higher priority. Ie: loader will load files from module with lowest priority.
+You can define module roots the loader tries to look for the modules under them. 
+Loader tries to load files with .js, .node and .json extensions (by default, but you can override this with constructor parameter).
 
-Module loader supports registering one module or multiple modules at once. It emit warning when no package.json exists in the module root.
+You can assign priority to the module roots: `lower` value means `higher priority`. Ie: loader will load files from module with lowest priority. Priority can be any number.
+For example:
+ 
+* register `/path/to/module-one` with priority `0`
+* register `/path/to/module-two` with priority `1`
+* `module-one` contains `lib/domain/models/A.node`
+* `module-two` contains `lib/domain/models/A.js`
+* `then` the loader will load `lib/domain/models/A.node` from `module-one`
+
+Module loader supports registering one module root or multiple modules roots at once. It emit warning when no package.json exists in the module root.
 
 ```coffeescript
 # Register one module root - returns Promise
@@ -56,19 +67,52 @@ loader.registerModuleRoots([
     .catch (err) -> # unable to register every module roots
 ```
 
-You can also register category plugins, which resolve path for the modules. It will run in context (this):
+##### Category plugin registration
+
+You can also register category plugins, which resolve path for the modules. They handle the `category` part in the `(env#)?category:pathSpec` module definition. 
+
+The signature of a category plugin method is:
 
 ```coffeescript
-CategoryPluginContext = 
-    plugins: {} # registered plugins
-    findModule: (path) -> # helper method which is looking for existing file with extensions passed at construction time, return Promise of first path exists
-    rec: (parent, key, env, pathSpec) -> # Recursive evaluation helper, shortcut for @plugins.get(parent)(env, [key].concat(@ensureArray(pathSpec)))
-    ensureArray: (a) -> # Helper to wrap a parameter into an array if it's not an array
+categoryPlugin = (env, pathSpec) ->
+  # this is a CategoryPluginContext defined below
 ```
 
-`CoCModuleLoader` provides the `recPlugin(parent, key, suffix)` method you can use to register custom plugins:
+Category plugins will run in a specific context (this) which consists of
 
 ```coffeescript
+CategoryPluginContext =
+    # accessor over the registered plugins (map of plugins by their names)
+    # You can access a specific one by @plugin('categoryPluginName') 
+    plugin: (name) -> pluginsMap.get(name)
+    
+    # helper method which is looking for the file (defined by the module id) under different module roots using the configured extensions
+    # For example, if you have '/module-one' with priority 0 and '/module-two' with priority 1 module roots have been registered and the extensions is configured by ['.js', '.node'], then
+    # @findModule('relative-path-to-file') will stat
+    #   - /module-one/relative-path-to-file.js
+    #   - /module-one/relative-path-to-file.node
+    #   - /module-two/relative-path-to-file.js
+    #   - /module-two/relative-path-to-file.node
+    # and returns a promise with the first existing one.
+    findModule: (path) -> 
+    
+    # helper method used in plugins to recursively resolve path. 
+    # For example model depends on domain, so this shortcut means: model = (env, pathSpec) = rec('domain', 'models', env, pathSpec)
+    rec: (parent, key, env, pathSpec)
+    
+    # Helper to wrap a parameter into an array if it's not an array
+    ensureArray: (a) -> 
+```
+
+`CoCModuleLoader` provides the `recPlugin(parent, key, suffix)` method you can use to register custom plugins based on existing one (as parent):
+
+* `parent` - is the parent category plugin name
+* `key` - path part appended to the path resolved by parent plugin
+* `suffix` - suffix for the resolved path
+
+```coffeescript
+# it means:
+# 'lib#customs:Some' will be resolved to 'lib#domain:' + '/' + customs + '/Some' + 'Custom' 
 loader.registerCategoryPlugin 'customPluginKey', loader.recPlugin 'domain', 'customs', 'Custom'
 
 # It also supports registering multiple plugins at once
@@ -78,104 +122,39 @@ loader.registerCategoryPlugin {
 }
 ```
 
+#### Usage
+
+You can use the loader to load modules defined by the `(env#)?category:pathSpec`:
+
+```coffeescript
+loader.load(moduleId)
+    .then (mod) -> # Use the module
+    .catch (err) -> # Unable to load the module
+```
+
+It will emit an info log when multiple module roots contains files with the resolved relative path.
+
+
 ## Project structure
 
-* **LIB_PREFIX**  - The root of the library/module sources. If the LIB_PREFIX env variable is not defined then use 'lib' by default.
-You may want to use different prefix (for example src) if you want to compile (coffee) or instruments (coverage) the sources.
-    * **domain** - Contains domain model.
-        * **models** - Entities and value objects.
-        * **repositories** - Model repositories.
-        * **services** - Services.
-    * **infrastructure** - Contains infrastructural implementations.
-        * **cli** - Command line utilities.
-            * **commands** - Command implementations.
-        * **i18n** - Internatialization framework.
-        * **log** - Logger frameworks.
-        * **persistence** - Persistence implementations (mongo, etc)
-        * **messaging** - Messaging implementations.
-        * **web** - Web service layer.
-            * **configurators** - Web framework configurators.
-            * **controllers** - Controllers.
-            * **factories** - Wire factories for web components.
-            * **middlewares** - Web framework middlewares.
-            * **routers** - Routers.
-* **logs** - If you use file-based logs and you have no rights to stream them into system log files, use this folder for that.
-* **src** - Coffee sources compiled into LIB_PREFIX folder (use prepublish).
-* **tests** - Tests. Try to follow the **LIB_PREFIX** structure.
-    **seeds** - Data providers for tests.
-    **LIB_PREFIX** - Test cases/suites.
-* **tests-src** - Test coffee sources compiled into tests folder.
-* **views** - Server side views (jade, etc).
-* **.bowerrc** - Bower configuration, at least the directory should point to the public/scripts/lib folder (3rd party libs).
-* **package.json** - Module description.
+Following category plugins are registered by default:
 
-# Usages
+* **MODULE_ROOT**  - A registered module root.
+  * **ENV** - Environment has been optionally defined in module id. Default to `lib`
+    * `domain` - Contains domain.
+        * `models` - Entities and value objects.
+        * `repositories` - Model repositories.
+        * `services` - Services.
+    * `infrastructure` - Contains infrastructural implementations.
+        * `cli` - Command line utilities.
+            * `commands` - Command implementations.
+        * `i18n` - Internatialization framework.
+        * `log` - Logger frameworks.
+        * `persistence` - Persistence implementations (mongo, etc)
+        * `messaging` - Messaging implementations.
+        * `web` - Web service layer.
+            * `configurators` - Web framework configurators.
+            * `controllers` - Controllers.
+            * `factories` - Wire factories for web components.
+            * `middlewares` - Web framework middlewares.
 
-In wire contexts:
-
-```javascript
-var wch = require 'wire-context-helper';
-var Helper = wch.Helper('lib');
-
-module.exports = {
-    bean: {
-        create: {
-            module: Helper.model('Person')
-        }
-    }
-};
-```
-
-You can use module provided factories:
-
-* ConfigurableFactory
-* MongooseConnectionFactory
-* WinstonLoggerFactory
-* ConsoleTransporterFactory
-
-To use them, you should define module in your wire and reference to them using the sub component factory plugin 
-(factories exist in the beans nested object):
-
-```javascript
-var wch = require 'wire-context-helper';
-var Helper = wch.Helper('lib');
-
-module.exports = {
-    helper: {
-        module: 'wire-context-helper',
-    },
-    express: {
-        create: {
-            module: 'express',
-            args: []
-        }
-    },            
-    app: {
-        sub: {
-            module: 'helper#beans.ConfigurableFactory',
-            args: [
-                Helper.ref('express'),
-                Helper.refs([
-                    // ..configurators
-                ])
-            ]
-        }
-    }
-}
-```
-
-To initialize wire context:
-
-```javascript
-var wire = require('wire');
-var wch = require('wire-context-helper');
-
-spec = require('path/to/context/spec');
-wch.Runner(spec, function(err, context) {
-    // wired
-});
-```
-
-# CoC
-
-As you can see, you have to configure almost nothing, you should follow conventions.

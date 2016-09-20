@@ -35,7 +35,8 @@ class CoCModuleLoader
 
   initPluginContext: ->
     @pluginContext =
-      plugins: @categoryPlugins
+      plugin: (name) =>
+        @categoryPlugins.get name
       findModule: (path) =>
         Promise.filter(@moduleRoots, fileFilter(path, @extensions)).then (validRoots) =>
           if validRoots.length == 0
@@ -47,7 +48,7 @@ class CoCModuleLoader
               @logger.info "More than one (#{roots.length}) valid roots have been found for #{path} (choosing the first): #{roots.join(',')}"
             Promise.resolve(pathModule.join(roots[0], path))
       rec: (parent, key, env, pathSpec) ->
-        @plugins.get(parent)(env, [key].concat(@ensureArray(pathSpec)))
+        @plugin(parent)(env, [key].concat(@ensureArray(pathSpec)))
       ensureArray: (a) ->
         if _.isArray(a) then a else [a]
 
