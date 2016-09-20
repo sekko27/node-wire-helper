@@ -60,3 +60,20 @@ describe 'CoCModuleLoader', ->
       'More than one (2) valid roots have been found for lib/domain/models/A (choosing the first): /development/node-wire-helper/tests/loader/module-two,/development/node-wire-helper/tests/loader/module-one'
       'module-two-A-model'
     ]
+
+  _.forEach [
+    ['lib#model:A', 'module-one-A-model']
+    ['lib#Model:A', 'module-one-AModel-model']
+    ['lib#service:A', 'module-one-A-service']
+    ['lib#Service:A', 'module-one-AService-service']
+    ['lib#repository:A', 'module-one-A-repository']
+    ['lib#Repository:A', 'module-one-ARepository-repository']
+  ], ([pathSpec, expected]) ->
+    it "should resolve #{pathSpec} to #{expected}", ->
+      new Promise( (resolve, reject) ->
+        loader = new CoCModuleLoader()
+        loader.logger = warn: reject, info: ->
+        loader.registerModuleRoot pathModule.join(__dirname, "module-one")
+          .then -> loader.load(pathSpec)
+          .then resolve
+      ).should.become expected

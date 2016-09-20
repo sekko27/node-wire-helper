@@ -18,6 +18,12 @@ fileFilter = (path, extensions) ->
       .then -> true
       .catch -> false
 
+recPlugin = (parent, key, suffix = "") ->
+  (env, pathSpec) ->
+    if _.isString(suffix) and (suffix != "") and _.isString(pathSpec)
+      pathSpec += suffix
+    @rec(parent, key, env, pathSpec)
+
 class CoCModuleLoader
   # @Inject logger
 
@@ -40,17 +46,45 @@ class CoCModuleLoader
             if validRoots.length > 1
               @logger.info "More than one (#{roots.length}) valid roots have been found for #{path} (choosing the first): #{roots.join(',')}"
             Promise.resolve(pathModule.join(roots[0], path))
+      rec: (parent, key, env, pathSpec) ->
+        @plugins.get(parent)(env, [key].concat(@ensureArray(pathSpec)))
       ensureArray: (a) ->
         if _.isArray(a) then a else [a]
+      recPlugin: recPlugin
+
 
   initBasePlugins: ->
     @registerCategoryPlugins {
       resolve: (env = "lib", pathSpec) ->
         @findModule [env].concat(@ensureArray(pathSpec)).join pathModule.sep
-      domain: (env, pathSpec) ->
-        @plugins.get('resolve')(env, ["domain"].concat(@ensureArray(pathSpec)))
-      model: (env, pathSpec) ->
-        @plugins.get('domain')(env, ["models"].concat(@ensureArray(pathSpec)))
+      domain:                   recPlugin('resolve', 'domain')
+      model:                    recPlugin('domain', 'models')
+      Model:                    recPlugin('domain', 'models', 'Model')
+      infrastructure:           recPlugin('resolve', 'infrastructure')
+      repository:               recPlugin('domain', 'repositories')
+      Repository:               recPlugin('domain', 'repositories', 'Repository')
+      service:                  recPlugin('domain', 'services')
+      Service:                  recPlugin('domain', 'services', 'Service')
+      web:                      recPlugin('infrastructure', 'web')
+      application:              recPlugin('infrastructure', 'application')
+      applicationMiddleware:    recPlugin('web', 'middlewares')
+      ApplicationMiddleware:    recPlugin('web', 'middlewares',' Middleware')
+      applicationConfigurator:  recPlugin('web', 'configurators')
+      ApplicationConfigurator:  recPlugin('web', 'configurators', 'Configurator')
+      applicationFactory:       recPlugin('web', 'factories')
+      ApplicationFactory:       recPlugin('web', 'factories', 'Factory')
+      persistence:              recPlugin('infrastructure', 'persistence')
+      messaging:                recPlugin('infrastructure', 'messaging')
+      log:                      recPlugin('infrastructure', 'log')
+      i18n:                     recPlugin('infrastructure', 'i18n')
+      cli:                      recPlugin('infrastructure', 'cli')
+      command:                  recPlugin('cli', 'commands')
+      Command:                  recPlugin('cli', 'commands', 'Command')
+      util:                     recPlugin('resolve', 'utils')
+      context:                  recPlugin('resolve', 'contexts')
+      view:                     recPlugin('resolve', 'views')
+      View:                     recPlugin('resolve', 'views', 'View')
+
     }
 
   registerModuleRoot: (root, priority = 0) ->
