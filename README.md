@@ -5,9 +5,9 @@ The module tries to
 * define basic folder structure for DDD-like projects 
 * provide some shortcuts to these components available from wire context specifications
 
-## Components
+# Components
 
-### CoCModuleLoader
+## CoCModuleLoader
 
 CoCModuleLoader is a module loader for wire. It supports module definitions defined by the `(env#)?category:pathSpec` format. 
 If the module is not defined in this format then the loader will fall-back to the default `require` module loader. 
@@ -16,7 +16,7 @@ For example passing the `lib#Model:Person` moduleId to the loader it tries to lo
 
 The category loaders are pluggable into the loader.
 
-#### Instantiation
+### Instantiation
 
 Wire-context-helper module exports the class as `CoCModuleLoader`:
 
@@ -34,9 +34,9 @@ loader = new CoCModuleLoader(extensions)
 loader.logger = createLoggerInstanceSomehow() # For example log4js, winston, etc...
 ```
 
-#### Configuration
+### Configuration
 
-##### Module root registration
+#### Module root registration
 
 You can define module roots the loader tries to look for the modules under them. 
 Loader tries to load files with .js, .node and .json extensions (by default, but you can override this with constructor parameter).
@@ -67,7 +67,7 @@ loader.registerModuleRoots([
     .catch (err) -> # unable to register every module roots
 ```
 
-##### Category plugin registration
+#### Category plugin registration
 
 You can also register category plugins, which resolve path for the modules. They handle the `category` part in the `(env#)?category:pathSpec` module definition. 
 
@@ -122,7 +122,7 @@ loader.registerCategoryPlugin {
 }
 ```
 
-#### Usage
+### Usage
 
 You can use the loader to load modules defined by the `(env#)?category:pathSpec`:
 
@@ -135,7 +135,7 @@ loader.load(moduleId)
 It will emit an info log when multiple module roots contains files with the resolved relative path.
 
 
-## Project structure
+# Project structure
 
 Following category plugins are registered by default:
 
