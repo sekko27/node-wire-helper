@@ -84,7 +84,17 @@ class CoCModuleLoader
       context:                  recPlugin('resolve', 'contexts')
     }
 
-  registerModuleRoot: (root, priority = 0) ->
+  resortModuleRoots: ->
+    @moduleRoots = _.sortBy @moduleRoots, 'priority'
+
+  registerModuleRoots: (roots) ->
+    Promise.each(
+      roots
+      ({root, priority}) =>
+        @registerModuleRoot(root, priority, false)
+    ).then => @resortModuleRoots()
+
+  registerModuleRoot: (root, priority = 0, resort = true) ->
     packagePath = path.join(root, "package.json")
     #noinspection JSUnresolvedVariable
     stat(packagePath)
@@ -92,7 +102,7 @@ class CoCModuleLoader
         @logger.warn "No package.json found in module root: #{root}"
       .finally =>
         @moduleRoots.push {root: root, priority: priority}
-        @moduleRoots = _.sortBy @moduleRoots, 'priority'
+        @resortModuleRoots() if resort
 
   registerCategoryPlugins: (plugins) ->
     _.each plugins, (plugin, category) => @registerCategoryPlugin category, plugin

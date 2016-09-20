@@ -3,11 +3,11 @@ w = require 'when'
 
 sub = (resolver, componentDef, wire) ->
   createInstance = (referencedModule, path, args) ->
-    switch componentDef.factory
-      when 'module'
-        _.get(referencedModule, path)
-      else
+    switch componentDef.options.factory
+      when 'function'
         _.get(referencedModule, path).apply null, args
+      else
+        _.get(referencedModule, path)
 
   options = componentDef.options
   module = options.module
