@@ -62,12 +62,33 @@ describe 'CoCModuleLoader', ->
     ]
 
   _.forEach [
+    ['lib#domain:A', 'module-one-A-domain']
     ['lib#model:A', 'module-one-A-model']
     ['lib#Model:A', 'module-one-AModel-model']
     ['lib#service:A', 'module-one-A-service']
     ['lib#Service:A', 'module-one-AService-service']
+    ['lib#infrastructure:A', 'module-one-A-infrastructure']
     ['lib#repository:A', 'module-one-A-repository']
     ['lib#Repository:A', 'module-one-ARepository-repository']
+    ['lib#web:A', 'module-one-A-web']
+    ['lib#application:A', 'module-one-A-web']
+    ['lib#applicationMiddleware:A', 'module-one-A-applicationMiddleware']
+    ['lib#ApplicationMiddleware:A', 'module-one-AApplicationMiddleware-applicationMiddleware']
+    ['lib#applicationConfigurator:A', 'module-one-A-applicationConfigurator']
+    ['lib#ApplicationConfigurator:A', 'module-one-AApplicationConfigurator-applicationConfigurator']
+    ['lib#applicationFactory:A', 'module-one-A-applicationFactory']
+    ['lib#ApplicationFactory:A', 'module-one-AApplicationFactory-applicationFactory']
+    ['lib#persistence:A', 'module-one-A-persistence']
+    ['lib#messaging:A', 'module-one-A-messaging']
+    ['lib#log:A', 'module-one-A-log']
+    ['lib#i18n:A', 'module-one-A-i18n']
+    ['lib#cli:A', 'module-one-A-cli']
+    ['lib#command:A', 'module-one-A-command']
+    ['lib#Command:A', 'module-one-ACommand-command']
+    ['lib#util:A', 'module-one-A-util']
+    ['lib#context:A', 'module-one-A-context']
+    #['lib#view:A', 'module-one-A-view']
+    #['lib#View:A', 'module-one-AView-view']
   ], ([pathSpec, expected]) ->
     it "should resolve #{pathSpec} to #{expected}", ->
       new Promise( (resolve, reject) ->

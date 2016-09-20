@@ -66,9 +66,9 @@ class CoCModuleLoader
       service:                  recPlugin('domain', 'services')
       Service:                  recPlugin('domain', 'services', 'Service')
       web:                      recPlugin('infrastructure', 'web')
-      application:              recPlugin('infrastructure', 'application')
+      application:              recPlugin('infrastructure', 'web')
       applicationMiddleware:    recPlugin('web', 'middlewares')
-      ApplicationMiddleware:    recPlugin('web', 'middlewares',' Middleware')
+      ApplicationMiddleware:    recPlugin('web', 'middlewares','Middleware')
       applicationConfigurator:  recPlugin('web', 'configurators')
       ApplicationConfigurator:  recPlugin('web', 'configurators', 'Configurator')
       applicationFactory:       recPlugin('web', 'factories')
@@ -82,9 +82,6 @@ class CoCModuleLoader
       Command:                  recPlugin('cli', 'commands', 'Command')
       util:                     recPlugin('resolve', 'utils')
       context:                  recPlugin('resolve', 'contexts')
-      view:                     recPlugin('resolve', 'views')
-      View:                     recPlugin('resolve', 'views', 'View')
-
     }
 
   registerModuleRoot: (root, priority = 0) ->
