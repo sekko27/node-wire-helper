@@ -50,8 +50,8 @@ class CoCModuleLoader
         @plugins.get(parent)(env, [key].concat(@ensureArray(pathSpec)))
       ensureArray: (a) ->
         if _.isArray(a) then a else [a]
-      recPlugin: recPlugin
 
+  recPlugin: recPlugin
 
   initBasePlugins: ->
     @registerCategoryPlugins {

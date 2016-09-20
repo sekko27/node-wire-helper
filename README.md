@@ -1,44 +1,85 @@
 # Goals
 
-The module tries to define basic folder structure for DDD-like projects and to provide some shortcut for
-build wire contexts.
-It try to detect the direct parent (invoker) root path and resolve path relative to that.
+The module tries to 
 
-## Develop wire-context-helper
+* define basic folder structure for DDD-like projects 
+* provide some shortcuts to these components available from wire context specifications
 
-It's a coffee-script project, so you need to compile it into javascripts. Package.json contains prepublish and 
-postinstall scripts which automates these processes, but meanwhile development you should compile sources automatically.
-You can do that:
+## Components
 
-* Configure your IDE to compile coffeescripts under src to the lib folder.
-* Run the watcher: coffee -cw -o lib src
+### CoCModuleLoader
 
-## Best practices
+CoCModuleLoader is a module loader for wire. It supports module definitions by the `(env#)?category:pathSpec` format. If the module is not defined in this format then the loader will fall-back to the default `require` module loader. 
 
-* Follow the project structure
-* If you define class bean you should use properties over constructor arguments.
-* Use the shortcuts if possible
-* Try to not use require in your sources, use injection instead.
-* Never create documentation/diagrams/etc under the project, use Wiki.
+For example passing the `lib#Model:Person` moduleId to the loader it tries to load module from `lib/domain/models/PersonModel` path (under one of the registered module root).
 
-# DDD project structure
+The category loaders are pluggable into the loader.
 
-The basic project structure:
+#### Instantiation
 
-* **build** - Build folder if you write native node bind.
-* **context** - Context configurations.
-* **locales** - Locale files for i18n.
-* **public** - Public sources (js/css/etc).
-    * **scripts** - Javascript sources.
-        * **lib** - Third party libraries.
-        * **models** - Client side models.
-        * **routers** - Router definitions.
-        * **template-views** - Client side template views.
-        * **views** - View sources.
-        * **template.js** - Compiled templates.
-        * **XXX.js** - Compiled requirejs entry point.
-    * **styles** - Stylesheets.
-    * **images** - Images.
+Wire-context-helper module exports the class as `CoCModuleLoader`:
+
+```coffeescript
+{CoCModuleLoader} = require 'wire-context-helper'
+```
+
+`CoCModuleLoader` requires a logger instance with `warn`, `info` shortcuts:
+ 
+```coffeescript
+# By default extensions parameter is defined as ['.js', '.node', '.json'] (in this order).
+# Loader will try to load modules with this extensions in this order.
+extensions = ['.js']
+loader = new CoCModuleLoader(extensions)
+loader.logger = createLoggerInstanceSomehow() # For example log4js, winston, etc...
+```
+
+#### Configuration
+
+You can define module root the loader tries to look for the modules under them. Loader tries to load files with .js, .node and .json extensions (by default, but you can override this with constructor parameter).
+
+You can assign priority to the module roots: lower value means higher priority. Ie: loader will load files from module with lowest priority.
+
+Module loader supports registering one module or multiple modules at once. It emit warning when no package.json exists in the module root.
+
+```coffeescript
+# Register one module root - returns Promise
+loader.registerModuleRoot(absolutePathToModuleRoot, priority)
+    .then -> # module root has been registered
+    .catch (err) -> # unable to register module root
+    
+# Register multiple module root - return Promise 
+loader.registerModuleRoots([
+  {root: moduleRoot1, priority: priority1}
+  {root: moduleRootN, priority: priorityN}
+])
+    .then -> # all module roots have been registered successfully
+    .catch (err) -> # unable to register every module roots
+```
+
+You can also register category plugins, which resolve path for the modules. It will run in context (this):
+
+```coffeescript
+CategoryPluginContext = 
+    plugins: {} # registered plugins
+    findModule: (path) -> # helper method which is looking for existing file with extensions passed at construction time, return Promise of first path exists
+    rec: (parent, key, env, pathSpec) -> # Recursive evaluation helper, shortcut for @plugins.get(parent)(env, [key].concat(@ensureArray(pathSpec)))
+    ensureArray: (a) -> # Helper to wrap a parameter into an array if it's not an array
+```
+
+`CoCModuleLoader` provides the `recPlugin(parent, key, suffix)` method you can use to register custom plugins:
+
+```coffeescript
+loader.registerCategoryPlugin 'customPluginKey', loader.recPlugin 'domain', 'customs', 'Custom'
+
+# It also supports registering multiple plugins at once
+loader.registerCategoryPlugin {
+    customPlugin1: loader.recPlugin 'domain', 'custom1'
+    customPlugin2: loader.recPlugin 'domain', 'custom2', 'X'
+}
+```
+
+## Project structure
+
 * **LIB_PREFIX**  - The root of the library/module sources. If the LIB_PREFIX env variable is not defined then use 'lib' by default.
 You may want to use different prefix (for example src) if you want to compile (coffee) or instruments (coverage) the sources.
     * **domain** - Contains domain model.
