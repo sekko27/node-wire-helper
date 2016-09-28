@@ -70,7 +70,7 @@ class CoCModuleLoader
       Factory:                  recPlugin('domain', 'factories', 'Factory')
       infrastructure:           recPlugin('resolve', 'infrastructure')
       infrastructureFactory:    recPlugin('infrastructure', 'factories')
-      InfrastructureFactory:    recPlugin('infrastructure', 'Factories')
+      InfrastructureFactory:    recPlugin('infrastructure', 'factories', 'Factory')
       repository:               recPlugin('domain', 'repositories')
       Repository:               recPlugin('domain', 'repositories', 'Repository')
       service:                  recPlugin('domain', 'services')
