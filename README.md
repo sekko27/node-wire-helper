@@ -201,10 +201,12 @@ Following category plugins are registered by default:
         * `models` - Entities and value objects.
         * `repositories` - Model repositories.
         * `services` - Services.
+        * `factories` - Factories.
     * `infrastructure` - Contains infrastructural implementations.
         * `cli` - Command line utilities.
             * `commands` - Command implementations.
         * `i18n` - Internatialization framework.
+        * `factories` - Infrastructure factories 
         * `log` - Logger frameworks.
         * `persistence` - Persistence implementations (mongo, etc)
         * `messaging` - Messaging implementations.
