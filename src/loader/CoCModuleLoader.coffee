@@ -64,6 +64,7 @@ class CoCModuleLoader
       resolve: (env = "lib", pathSpec) ->
         @findModule [env].concat(@ensureArray(pathSpec)).join pathModule.sep
       domain:                   recPlugin('resolve', 'domain')
+      configuration:            recPlugin('resolve', 'configuration')
       model:                    recPlugin('domain', 'models')
       Model:                    recPlugin('domain', 'models', 'Model')
       factory:                  recPlugin('domain', 'factories')
@@ -133,7 +134,7 @@ class CoCModuleLoader
     @categoryPlugins.set category, _.bind plugin, @pluginContext
 
   load: (moduleId) ->
-    match = moduleId.match /^(([^#]+)#)?([^:]+):(.*)$/
+    match = moduleId.match /^(([^#]*)#)?([^:]+):(.*)$/
     if match
       loader = match[3]
       if not @categoryPlugins.has(loader)
