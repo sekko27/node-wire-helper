@@ -99,6 +99,7 @@ class CoCModuleLoader
 
   resortModuleRoots: ->
     @moduleRoots = _.sortBy @moduleRoots, 'priority'
+    @
 
   registerModuleRoots: (roots) ->
     Promise.each(
