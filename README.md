@@ -18,10 +18,10 @@ The category loaders are pluggable into the loader.
 
 ### Instantiation
 
-Wire-context-helper module exports the class as `CoCModuleLoader`:
+Wire-context-helper module exports the `CoCModuleLoader` as `Loader`:
 
 ```coffeescript
-{CoCModuleLoader} = require 'wire-context-helper'
+{Loader} = require 'wire-context-helper'
 ```
 
 `CoCModuleLoader` requires a logger instance with `warn`, `info` shortcuts:
@@ -30,7 +30,7 @@ Wire-context-helper module exports the class as `CoCModuleLoader`:
 # By default the 'extensions' parameter is defined as ['.js', '.node', '.json'] (in this order).
 # Loader will try to load modules with this extensions in this order.
 extensions = ['.js']
-loader = new CoCModuleLoader(extensions)
+loader = new Loader(extensions)
 loader.logger = createLoggerInstanceSomehow() # For example log4js, winston, etc...
 ```
 
@@ -134,6 +134,56 @@ loader.load(moduleId)
 
 It will emit an info log when multiple module roots contains files with the resolved relative path.
 
+## Runner
+
+Module also exports a Wire runner:
+
+```coffeescript
+{Runner} = require 'wire-context-helper'
+```
+
+It has parameters:
+
+* `spec` - wire spec
+* `loader` - wire module loader (can be CoCModuleLoader)
+
+The Runner adds the `sub` plugin to the spec which supports the bean definitions like
+
+```coffeescript
+referencedBean:
+  module: 'someModule'
+bean:
+  sub:
+    module: 'referencedBean#path.to.prop'
+    factory: 'function'
+    args: [ 1, 2 ]
+```
+
+This will use the `referencedBean` bean and extract a function defined by the `path.to.prop` path from the bean, and initializes using args.
+
+`factory` can be:
+
+* factory - use extracted member as function to create new instance
+* module - use extracted member as is
+
+A complete example for using the Runner is:
+
+```coffeescript
+path = require 'path'
+{Loader, Runner} = require 'wire-context-helper'
+logger = initializeLogger()
+
+loader = new Loader(['.js', '.node'])
+loader.logger = logger
+
+# Register module roots
+loader.registerModuleRoot '.', 0
+loader.registerModuleRoot path.dirname(require.resolve('some-other-module')), 1
+
+spec = require 'path-to-context-spec'
+Runner(spec, loader).then (ctx) ->
+  # Use the spec
+```
 
 # Project structure
 
@@ -158,3 +208,10 @@ Following category plugins are registered by default:
             * `factories` - Wire factories for web components.
             * `middlewares` - Web framework middlewares.
 
+
+# TODOS
+
+* Add support to register module root from module (shortcut for registerModuleRoot path.dirname(require.resolve(module)))
+* Use wire instantiation in Sub plugin
+* Add default dummy logger to the CoCModuleLoader
+* Create shortcut for Runner using loader (with registered module root, etc)
