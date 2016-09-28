@@ -84,6 +84,8 @@ class CoCModuleLoader
       ApplicationConfigurator:  recPlugin('web', 'configurators', 'Configurator')
       applicationFactory:       recPlugin('web', 'factories')
       ApplicationFactory:       recPlugin('web', 'factories', 'Factory')
+      controller:               recPlugin('web', 'controllers')
+      Controller:               recPlugin('web', 'controllers', 'Controller')
       persistence:              recPlugin('infrastructure', 'persistence')
       messaging:                recPlugin('infrastructure', 'messaging')
       log:                      recPlugin('infrastructure', 'log')
