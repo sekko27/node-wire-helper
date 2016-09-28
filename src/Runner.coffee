@@ -8,7 +8,10 @@ module.exports = (spec, loader) ->
   else
     spec['$plugins'] = [ plugin ]
 
-  wire(spec, require: loader).then(
+  loaderWrap = if loader
+    (moduleId) -> loader.load(moduleId)
+
+  wire(spec, require: loaderWrap).then(
     (context) ->
       numberOfBeans = _.keys(context).length
       if _.has context, 'logger'
