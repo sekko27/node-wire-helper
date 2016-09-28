@@ -112,6 +112,7 @@ class CoCModuleLoader
     packagePath = path.join(root, "package.json")
     #noinspection JSUnresolvedVariable
     stat(packagePath)
+      .then  => @
       .catch =>
         @logger.warn "No package.json found in module root: #{root}"
       .finally =>
