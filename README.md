@@ -24,7 +24,7 @@ Wire-context-helper module exports the `CoCModuleLoader` as `Loader`:
 {Loader} = require 'wire-context-helper'
 ```
 
-`CoCModuleLoader` requires a logger instance with `warn`, `info` shortcuts:
+`CoCModuleLoader` has a `logger` member which is a DummyLoaderLogger instance by default (logging to console). If you want you can inject a custom logger which supports `warn`, `info` shortcuts:
  
 ```coffeescript
 # By default the 'extensions' parameter is defined as ['.js', '.node', '.json'] (in this order).
@@ -217,7 +217,5 @@ Following category plugins are registered by default:
 
 # TODOS
 
-* DONE - Add support to register module root from module (shortcut for registerModuleRoot path.dirname(require.resolve(module)))
 * Use wire instantiation in Sub plugin
-* Add default dummy logger to the CoCModuleLoader
 * Create shortcut for Runner using loader (with registered module root, etc)

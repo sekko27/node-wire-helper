@@ -3,6 +3,7 @@ path = require 'path'
 Promise = require 'bluebird'
 stat = Promise.promisify(require('fs').stat)
 pathModule = require 'path'
+DummyLoaderLogger = require './DummyLoaderLogger'
 
 DEFAULT_EXTENSIONS = ['.js', '.node', '.json']
 
@@ -31,6 +32,7 @@ class CoCModuleLoader
   # @Inject logger
 
   constructor: (@extensions = DEFAULT_EXTENSIONS) ->
+    @logger = DummyLoaderLogger
     @moduleRoots = []
     @categoryPlugins = new Map()
     @initPluginContext()
