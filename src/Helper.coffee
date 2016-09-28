@@ -27,4 +27,4 @@ H =
       console.log "Using default value for #{name} environment variable: #{def}"
       def
 
-module.export = H
+module.exports = H
