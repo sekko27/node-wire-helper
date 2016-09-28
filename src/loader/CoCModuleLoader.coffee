@@ -24,6 +24,9 @@ recPlugin = (parent, key, suffix = "") ->
       pathSpec += suffix
     @rec(parent, key, env, pathSpec)
 
+moduleToRoot = (module) ->
+  pathModule.dirname(require.resolve(module))
+
 class CoCModuleLoader
   # @Inject logger
 
@@ -104,6 +107,16 @@ class CoCModuleLoader
       .finally =>
         @moduleRoots.push {root: root, priority: priority}
         @resortModuleRoots() if resort
+
+  registerModules: (modules) ->
+    Promise.each(
+      modules
+      ({module, priority}) =>
+        @registerModuleRoot(moduleToRoot(module), priority)
+    ).then => @resortModuleRoots()
+
+  registerModule: (module, priority = 0) ->
+    @registerModuleRoot moduleToRoot(module), priority
 
   registerCategoryPlugins: (plugins) ->
     _.each plugins, (plugin, category) => @registerCategoryPlugin category, plugin

@@ -67,6 +67,12 @@ loader.registerModuleRoots([
     .catch (err) -> # unable to register every module roots
 ```
 
+You can also register modules as module root:
+
+```coffeescript
+loader.registerModule 'some-module', 1
+```
+
 #### Category plugin registration
 
 You can also register category plugins, which resolve path for the modules. They handle the `category` part in the `(env#)?category:pathSpec` module definition. 
@@ -178,7 +184,7 @@ loader.logger = logger
 
 # Register module roots
 loader.registerModuleRoot '.', 0
-loader.registerModuleRoot path.dirname(require.resolve('some-other-module')), 1
+loader.registerModule 'some-other-module', 1
 
 spec = require 'path-to-context-spec'
 Runner(spec, loader).then (ctx) ->
@@ -211,7 +217,7 @@ Following category plugins are registered by default:
 
 # TODOS
 
-* Add support to register module root from module (shortcut for registerModuleRoot path.dirname(require.resolve(module)))
+* DONE - Add support to register module root from module (shortcut for registerModuleRoot path.dirname(require.resolve(module)))
 * Use wire instantiation in Sub plugin
 * Add default dummy logger to the CoCModuleLoader
 * Create shortcut for Runner using loader (with registered module root, etc)
