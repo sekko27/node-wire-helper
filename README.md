@@ -195,14 +195,54 @@ Runner(spec, loader).then (ctx) ->
 
 Module also exports a utility helper as `Helper`.
 
-|Method|Description|
-|------|:----------|
-|`Helper.ref(name)`|Shortcut for `{$ref: name}`|
-|`Helper.refs(names)`|Create array of references: `Helper.ref ['a', 'b']` means `[{$ref: 'a'}, {$ref: 'b'}]`|
-|`Helper.environment()`|Resolve `NODE_ENV` environment variable. Default to `production`.|
-|`Helper.env(cases)`|Switch case for environment cases, i.e: cases parameter is an object literal with environment keys and related values. For example: `Helper.env({production:0, development:1, default: 2})` will evaluates 0 for production, 1 for development NODE_ENV or 2 for other environment setting.|
-|`Helper.envVar(name, def)`|Returns environment variable value if exists or the def parameter.|
-|`Helper.factory(moduleSpec, argSpec...)`|Short cut for factory definition. It supports the `=>ref` syntax for arguments. So, `bean: Helper.factory 'lib#Model:Factory', '=>driver', {level: 'INFO'}` means `bean: {create: {module: 'lib#Factory:Person', args: [ {$ref: 'driver'}, {level: 'INFO'} ] }}`|
+#### Helper.ref(name)
+
+Shortcut for `{$ref: name}`
+
+#### Helper.refs(names)
+
+Create array of references: `Helper.ref ['a', 'b']` means `[{$ref: 'a'}, {$ref: 'b'}]`
+
+#### Helper.environment()
+
+Resolve `NODE_ENV` environment variable. Default to `production`
+
+#### Helper.env(cases)
+
+Switch case for environment cases, i.e: cases parameter is an object literal with environment keys and related values. 
+
+For example: 
+
+```coffeescript
+Helper.env {
+    production: 0
+    development: 1
+    default: 2
+}
+``` 
+
+will evaluates 0 for production, 1 for development NODE_ENV or 2 for other environment setting.
+
+#### Helper.envVar(name, def)
+
+Returns environment variable value if exists or the def parameter.
+
+#### Helper.factory(moduleSpec, argSpec...)
+
+Shortcut for factory definition. It supports the `=>ref` syntax for arguments. 
+
+So, `bean: Helper.factory 'lib#Model:Factory', '=>driver', {level: 'INFO'}` means 
+
+```coffeescript
+bean: 
+    create: 
+        module: 'lib#Factory:Person'
+        args: [ 
+            {$ref: 'driver'}
+            {level: 'INFO'} 
+        ]
+```
+
 # Project structure
 
 Following category plugins are registered by default:
