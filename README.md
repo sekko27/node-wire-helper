@@ -9,22 +9,22 @@ The module tries to
 
 ## CoCModuleLoader
 
-CoCModuleLoader is a module loader for wire. It supports module definitions defined by the `(env#)?category:pathSpec` format. 
-If the module is not defined in this format then the loader will fall-back to the default `require` module loader. 
+CoCModuleLoader is a module loader for wire. It supports module definitions defined by the __(env#)?category:pathSpec__ format. 
+If the module is not defined in this format then the loader will fall-back to the default __require__ module loader. 
 
-For example passing the `lib#Model:Person` moduleId to the loader it tries to load module from `lib/domain/models/PersonModel` path (under one of the registered module root, see below).
+For example passing the __lib#Model:Person__ moduleId to the loader it tries to load module from __lib/domain/models/PersonModel__ path (under one of the registered module root, see below).
 
 The category loaders are pluggable into the loader.
 
 ### Instantiation
 
-Wire-context-helper module exports the `CoCModuleLoader` as `Loader`:
+Wire-context-helper module exports the __CoCModuleLoader__ as __Loader__:
 
 ```coffeescript
 {Loader} = require 'wire-context-helper'
 ```
 
-`CoCModuleLoader` has a `logger` member which is a DummyLoaderLogger instance by default (logging to console). If you want you can inject a custom logger which supports `warn`, `info` shortcuts:
+__CoCModuleLoader__ has a __logger__ member which is a DummyLoaderLogger instance by default (logging to console). If you want you can inject a custom logger which supports __warn__, __info__ shortcuts:
  
 ```coffeescript
 # By default the 'extensions' parameter is defined as ['.js', '.node', '.json'] (in this order).
@@ -41,14 +41,14 @@ loader.logger = createLoggerInstanceSomehow() # For example log4js, winston, etc
 You can define module roots the loader tries to look for the modules under them. 
 Loader tries to load files with .js, .node and .json extensions (by default, but you can override this with constructor parameter).
 
-You can assign priority to the module roots: `lower` value means `higher priority`. Ie: loader will load files from module with lowest priority. Priority can be any number.
+You can assign priority to the module roots: __lower__ value means __higher priority__. Ie: loader will load files from module with lowest priority. Priority can be any number.
 For example:
  
-* register `/path/to/module-one` with priority `0`
-* register `/path/to/module-two` with priority `1`
-* `module-one` contains `lib/domain/models/A.node`
-* `module-two` contains `lib/domain/models/A.js`
-* `then` the loader will load `lib/domain/models/A.node` from `module-one`
+* register __/path/to/module-one__ with priority __0__
+* register __/path/to/module-two__ with priority __1__
+* __module-one__ contains __lib/domain/models/A.node__
+* __module-two__ contains __lib/domain/models/A.js__
+* __then__ the loader will load __lib/domain/models/A.node__ from __module-one__
 
 Module loader supports registering one module root or multiple modules roots at once. It emit warning when no package.json exists in the module root.
 
@@ -75,7 +75,7 @@ loader.registerModule 'some-module', 1
 
 #### Category plugin registration
 
-You can also register category plugins, which resolve path for the modules. They handle the `category` part in the `(env#)?category:pathSpec` module definition. 
+You can also register category plugins, which resolve path for the modules. They handle the __category__ part in the __(env#)?category:pathSpec__ module definition. 
 
 The signature of a category plugin method is:
 
@@ -110,11 +110,11 @@ CategoryPluginContext =
     ensureArray: (a) -> 
 ```
 
-`CoCModuleLoader` provides the `recPlugin(parent, key, suffix)` method you can use to register custom plugins based on existing one (as parent):
+__CoCModuleLoader__ provides the __recPlugin(parent, key, suffix)__ method you can use to register custom plugins based on existing one (as parent):
 
-* `parent` - is the parent category plugin name
-* `key` - path part appended to the path resolved by parent plugin
-* `suffix` - suffix for the resolved path
+* __parent__ - is the parent category plugin name
+* __key__ - path part appended to the path resolved by parent plugin
+* __suffix__ - suffix for the resolved path
 
 ```coffeescript
 # it means:
@@ -130,7 +130,7 @@ loader.registerCategoryPlugin {
 
 ### Usage
 
-You can use the loader to load modules defined by the `(env#)?category:pathSpec`:
+You can use the loader to load modules defined by the __(env#)?category:pathSpec__:
 
 ```coffeescript
 loader.load(moduleId)
@@ -150,10 +150,10 @@ Module also exports a Wire runner:
 
 It has parameters:
 
-* `spec` - wire spec
-* `loader` - wire module loader (can be CoCModuleLoader)
+* __spec__ - wire spec
+* __loader__ - wire module loader (can be CoCModuleLoader)
 
-The Runner adds the `sub` plugin to the spec which supports the bean definitions like
+The Runner adds the __sub__ plugin to the spec which supports the bean definitions like
 
 ```coffeescript
 referencedBean:
@@ -165,9 +165,9 @@ bean:
     args: [ 1, 2 ]
 ```
 
-This will use the `referencedBean` bean and extract a function defined by the `path.to.prop` path from the bean, and initializes using args.
+This will use the __referencedBean__ bean and extract a function defined by the __path.to.prop__ path from the bean, and initializes using args.
 
-`factory` can be:
+__factory__ can be:
 
 * factory - use extracted member as function to create new instance
 * module - use extracted member as is
@@ -193,19 +193,25 @@ Runner(spec, loader).then (ctx) ->
 
 ## Helper
 
-Module also exports a utility helper as `Helper`.
+Module also exports a utility helper as __Helper__.
 
 #### Helper.ref(name)
 
-Shortcut for `{$ref: name}`
+Shortcut for __{$ref: name}__
 
 #### Helper.refs(names)
 
-Create array of references: `Helper.ref ['a', 'b']` means `[{$ref: 'a'}, {$ref: 'b'}]`
+Create array of references: 
+
+```coffeescript
+Helper.ref(['a', 'b']) 
+# Same as
+[{$ref: 'a'}, {$ref: 'b'}]
+```
 
 #### Helper.environment()
 
-Resolve `NODE_ENV` environment variable. Default to `production`
+Resolve __NODE_ENV__ environment variable. Default to __production__
 
 #### Helper.env(cases)
 
@@ -229,9 +235,15 @@ Returns environment variable value if exists or the def parameter.
 
 #### Helper.factory(moduleSpec, argSpec...)
 
-Shortcut for factory definition. It supports the `=>ref` syntax for arguments. 
+Shortcut for factory definition. It supports the __=>ref__ syntax for arguments. 
 
-So, `bean: Helper.factory 'lib#Model:Factory', '=>driver', {level: 'INFO'}` means 
+So
+
+```coffeescript
+bean: Helper.factory 'lib#Model:Factory', '=>driver', {level: 'INFO'}
+``` 
+
+means 
 
 ```coffeescript
 bean: 
@@ -248,25 +260,25 @@ bean:
 Following category plugins are registered by default:
 
 * **MODULE_ROOT**  - A registered module root.
-  * **ENV** - Environment has been optionally defined in module id. Default to `lib`
-    * `domain` - Contains domain.
-        * `models` - Entities and value objects.
-        * `repositories` - Model repositories.
-        * `services` - Services.
-        * `factories` - Factories.
-    * `infrastructure` - Contains infrastructural implementations.
-        * `cli` - Command line utilities.
-            * `commands` - Command implementations.
-        * `i18n` - Internatialization framework.
-        * `factories` - Infrastructure factories 
-        * `log` - Logger frameworks.
-        * `persistence` - Persistence implementations (mongo, etc)
-        * `messaging` - Messaging implementations.
-        * `web` - Web service layer.
-            * `configurators` - Web framework configurators.
-            * `controllers` - Controllers.
-            * `factories` - Wire factories for web components.
-            * `middlewares` - Web framework middlewares.
+  * **ENV** - Environment has been optionally defined in module id. Default to __lib__
+    * __domain__ - Contains domain.
+        * __models__ - Entities and value objects.
+        * __repositories__ - Model repositories.
+        * __services__ - Services.
+        * __factories__ - Factories.
+    * __infrastructure__ - Contains infrastructural implementations.
+        * __cli__ - Command line utilities.
+            * __commands__ - Command implementations.
+        * __i18n__ - Internatialization framework.
+        * __factories__ - Infrastructure factories 
+        * __log__ - Logger frameworks.
+        * __persistence__ - Persistence implementations (mongo, etc)
+        * __messaging__ - Messaging implementations.
+        * __web__ - Web service layer.
+            * __configurators__ - Web framework configurators.
+            * __controllers__ - Controllers.
+            * __factories__ - Wire factories for web components.
+            * __middlewares__ - Web framework middlewares.
 
 
 # TODOS
