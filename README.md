@@ -196,7 +196,7 @@ Runner(spec, loader).then (ctx) ->
 Module also exports a utility helper as `Helper`.
 
 |Method|Description|
-|------|-----------|
+|------|:----------|
 |`Helper.ref(name)`|Shortcut for `{$ref: name}`|
 |`Helper.refs(names)`|Create array of references: `Helper.ref ['a', 'b']` means `[{$ref: 'a'}, {$ref: 'b'}]`|
 |`Helper.environment()`|Resolve `NODE_ENV` environment variable. Default to `production`.|
