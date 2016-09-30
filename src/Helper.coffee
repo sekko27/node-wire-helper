@@ -27,4 +27,25 @@ H =
       console.log "Using default value for #{name} environment variable: #{def}"
       def
 
+  prepareArg: (arg) ->
+    if _.isString arg
+      match = arg.match /^=>(.+)$/
+      if match then H.ref(match[1].trim()) else arg
+    else
+      arg
+
+  prepareArgs: (args) ->
+    _.map args, H.prepareArg
+
+  create: (module, args, properties = undefined) ->
+    create:
+      module: module
+      args: H.prepareArgs(args)
+    properties: properties
+
+  ##
+  # Helper for bean: Helper.factory 'some-module', '=>ref1', 'concrete'
+  factory: (module, argSpec...) ->
+    H.create module, argSpec
+
 module.exports = H
