@@ -1,14 +1,11 @@
 {
   "name": "wire-context-helper",
-  "version": "1.0.18",
+  "version": "1.1.0",
   "description": "Helper module for Wire DI extending it with plugins",
   "homepage": "https://github.com/sekko27/node-wire-helper",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --recursive -R spec tests",
-    "prepublish": "coffee -c -o lib/ src/ && coffee -c index.coffee",
-    "postinstall": "[ -d \"lib\" ] || (echo \"Compiling coffee sources\" && coffee -c -o lib src && coffee -c index.coffee)",
-    "gendoc": "coffeedoc -o docs ."
+    "test": "mocha --recursive -R spec tests"
   },
   "bugs": {
     "url": "https://github.com/sekko27/node-wire-helper/issues",
@@ -28,18 +25,13 @@
   "license": "MIT",
   "private": false,
   "dependencies": {
-    "bluebird": "^3.4.6",
-    "coffee-script": "~1.8.0",
-    "core-error-predicates": "^1.1.0",
-    "lodash": "~4.13.1",
-    "upper-case-first": "~1.0.1",
-    "when": "~3.5.0",
-    "wire": "~0.10.9"
+    "bluebird": "^3.4.7",
+    "lodash": "~4.17.4",
+    "wire": "^0.10.11"
   },
   "devDependencies": {
-    "chai-as-promised": "~4.1.1",
-    "chai": "~1.9.2",
-    "mocha": "~1.21.5",
-    "load-grunt-tasks": "~0.6.0"
+    "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
+    "mocha": "^3.2.0"
   }
 }
