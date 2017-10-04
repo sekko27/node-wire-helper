@@ -1,4 +1,4 @@
-const _ = require('lodash');
+const Promise = require('bluebird');
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
@@ -16,6 +16,12 @@ function wireFactoryOf(value) {
         ],
         Promise2: {
             module: 'bluebird'
+        },
+        awareRef: {
+            literal: 'aware-ref'
+        },
+        awareRef2: {
+            literal: 'aware-ref-2'
         },
         factoryOfHash: {
             factoryOf: {
@@ -37,9 +43,16 @@ function wireFactoryOf(value) {
 }
 
 describe('FactoryOf plugin', function() {
-    it('should factorize es6 classes', function(done) {
+    it('should factorize es6 classes and apply awares', function() {
         //noinspection JSUnresolvedVariable
-        wireFactoryOf(TEST_VALUE).should.eventually.have
-            .deep.property('factoryOfHash.value', TEST_VALUE).and.notify(done);
+        return Promise.all([
+            wireFactoryOf(TEST_VALUE)
+                .should.eventually.have.deep.property('factoryOfHash.value', TEST_VALUE),
+            wireFactoryOf(TEST_VALUE)
+                .should.eventually.have.property('awareRef', 'aware-ref'),
+            wireFactoryOf(TEST_VALUE)
+                .should.eventually.have.property('awareRef2', 'aware-ref-2'),
+        ]);
+
     });
 });
