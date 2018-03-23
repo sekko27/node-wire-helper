@@ -19,6 +19,9 @@ function wireSubHash(prop, factory) {
         hash: {
             module: 'lib#model:SubHash'
         },
+        awareSource: {
+            literal: 'aware-source'
+        },
         prop: {
             sub: {
                 module: `hash#${prop}`,
@@ -40,4 +43,11 @@ describe('Sub plugin', function() {
     it('should extract property from bean', function(done) {
         wireSubHash('a', 'module').should.eventually.have.property('prop', 1).and.notify(done);
     });
+    it('should apply awareness rules - factory', function(done) {
+        wireSubHash('c', 'factoryOf').should.eventually.have.deep.property('prop.awareSource', 'aware-source').and.notify(done);
+    });
+    it('should apply awareness rules - factoryOfFactory', function(done) {
+        wireSubHash('c', 'factoryOfFactory').then(ctx => ctx.prop()).should.eventually.have.property('awareSource', 'aware-source').and.notify(done);
+    });
+
 });
