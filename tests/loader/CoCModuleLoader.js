@@ -16,14 +16,6 @@ function buildWarningLoader(resolve) {
 //noinspection NodeModulesDependencies
 describe('CoCModuleLoader', function() {
     //noinspection NodeModulesDependencies
-    it('should emit warning registering module root without package.json', function(done) {
-        //noinspection JSUnresolvedVariable
-        new Promise((resolve) => {
-            buildWarningLoader(resolve).registerModuleRoot(__dirname);
-        }).should.become(`No package.json has been found in module root: ${__dirname}`).and.notify(done);
-    });
-
-    //noinspection NodeModulesDependencies
     it('should not emit warning registering module root with existing package.json', function(done) {
         //noinspection JSUnresolvedFunction
         new Promise((resolve, reject) => {
